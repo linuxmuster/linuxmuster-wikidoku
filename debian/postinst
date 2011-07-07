@@ -1,2 +1,7 @@
 #!/bin/sh -e
 
+if [ -f /etc/bash.bashrc ]; then
+sed -i -e '/alias wikidoku-logshell/d' /etc/bash.bashrc
+echo 'alias wikidoku-logshell=". /etc/linuxmuster-wikidoku/logshell"' >> /etc/bash.bashrc
+fi
+
