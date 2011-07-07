@@ -62,7 +62,6 @@ if ( -f $STARTPAGE ) {
    close (IN);
 }
 
-print $wikitext_in;
 $linklist = $STARTREPLACE;
 
 @allscripts = <$SCRIPTSDIR/*>;
@@ -82,10 +81,27 @@ foreach $script (@allscripts) {
     }
 }
 
-$wikitext_in =~ s/^(.*)\/\* wikidoku_start.*\/* wikidoku_ende(.*)$/$1 $linktext $2/g;
+$tags=0;
+if ( $wikitext_in =~  /^(.*)\/\* wikidoku_start/s ) {
+    $start_text = $1;
+    $tags++;
+}
 
-open(OUT, ">$STARTPAGE");
-print OUT $wikitext_in;
+if ( $wikitext_in =~  /wikidoku_ende.*?\*\/(.*)$/s ) {
+    $end_text = $1;
+    $tags++;
+}
+
+$endtag = "\n\n/* wikidoku_ende - diesen Kommentar nicht verändern! */\n";
+
+if ( $tags == 2 ) {
+    $wikitext_out=$start_text . $linklist . $endtag . $end_text;
+    open(OUT, ">$STARTPAGE");
+    print OUT $wikitext_out;
+    close(OUT);
+} else {
+    print "Die Markierunge wurden nicht gefunden!\n";
+}
 
 
 

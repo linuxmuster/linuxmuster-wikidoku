@@ -1,3 +1,10 @@
+linuxmuster-wikidoku (0.1.1-0) unstable; urgency=low
+
+   * fixed bug in sectionedit
+   * fixed wrong template
+
+ -- Frank Schiebel <frank@linuxmuster.net>  Thu, 07 Jul 2011 18:05:00 +0100
+
 linuxmuster-wikidoku (0.1.0-0) unstable; urgency=low
 
    * first release ready for testing

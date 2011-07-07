@@ -25,11 +25,5 @@
 
 /* wikidoku_start - diesen Kommentar nicht verändern! */
 
-  * [[status|Musterlösungsstatus]]
-  * [[loglist|Kommandologs]]
-  * [[workstations_ip|Workstations nach IP-Adresse]]
-  * [[workstations_name|Workstations nach Rechnername]]
-  * [[workstations_raum|Workstations nach Raumname]]
-  * [[workstations_hw|Workstations nach Hardwareklasse]]
 
 /* wikidoku_ende - diesen Kommentar nicht verändern! */
