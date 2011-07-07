@@ -1,0 +1,14 @@
+Source: linuxmuster-wikidoku
+Section: debian-linuxmuster
+Priority: optional
+Maintainer: Frank Schiebel <frank@linuxmuster.net>
+Build-Depends: debhelper (>= 4.0.0)
+Standards-Version: 3.6.0
+
+Package: linuxmuster-wikidoku
+Section: unknown
+Priority: optional
+Architecture: i386
+Depends: linuxmuster-portfolio
+Description: linuxmuster-wikidoku is a add on to linuxmuster-portfolio for documentation issues
+
