@@ -1,0 +1,73 @@
+#!/usr/bin/perl
+
+
+open(KONFIGURATION, '</etc/linuxmuster-wikidoku/wikidoku.conf') or die 'Kann Konfigurationsdatei nicht öffnen: '.$!;
+while (<KONFIGURATION>) {
+chomp;              # Zeilenumbrüche entfernen
+s/#.*//;           # Kommentare ignorieren wenn nötig (dazu # entfernen am Anfang!)
+s/^\s+//;           # Leerzeichen am Anfang entfernen
+s/\s+$//;           # und dasselbe am Ende auch
+next unless length;     # Das was nun noch übrig ist... 
+# splitten in Paare
+my ($name, $value) = split(/\s*=\s*/, $_, 2);
+$config{$name}=$value;
+}
+close (KONFIGURATION);
+
+if ( ! -d $config{'PAGESDIR'} ) { die "Pagesdir existiert nicht!";}
+
+$SCRIPTSDIR=$config{'SCRIPTSDIR'};
+$config{'ZIELNAMENSRAUM'} =~ s/:/\//;
+$TARGETNAMESPACE = $config{'PAGESDIR'} . "/" . $config{'ZIELNAMENSRAUM'};
+$TARGETNAMESPACE =~ s/\/\//\//;
+$STARTPAGE=$TARGETNAMESPACE."/start.txt";
+$STARTPAGE =~ s/\/\//\//;
+
+
+if ( ! -d $TARGETNAMESPACE ) {
+   system("mkdir -p $TARGETNAMESPACE");
+   system("chown www-data: $TARGETNAMESPACE");
+}
+if ( -f $STARTPAGE ) {
+   system("chown www-data: $STARTPAGE");
+}
+
+$STARTREPLACE  = "<wikidoku - diese tags nicht loeschen!>\n===== Von WikiDoku erzeugte Seiten =====\n\n";
+if ( -f $STARTPAGE ) {
+   open(IN, "<$STARTPAGE");
+   while(<IN>){
+     $wikitext_in = $wikitext_in.$_;
+   }
+   close (IN);
+} else {
+
+}
+
+print $wikitext_in;
+$linklist = $STARTREPLACE; 
+
+@allscripts = <$SCRIPTSDIR/*>; 
+foreach $script (@allscripts) {
+    print "Running " . $script . "\n";
+    $wikitext = `$script`;
+    if ( $wikitext =~ /wikidoc\[\[(.*)\|(.*)\]\]/ ) {
+        $pagefile = $TARGETNAMESPACE . "/" . $1.".txt";
+        $linktext = "  * [[$1|$2]]";
+        $wikitext =~ s/wikidoc\[\[.*\]\]//;
+        $linklist .=  "\n" . $linktext;
+        open(WIKIPAGE, ">$pagefile");
+        print WIKIPAGE $wikitext;
+        close(WIKIPAGE);
+    } else  {
+        print "Keine Seite erzeugt, Startzeile fehlt!\n";
+    }
+} 
+
+$wikitext_in =~ s/^(.*)<wikidoku.*<\/wikidoku.*>(.*)$/$1 $linktext $2/g;
+
+open(OUT, ">$STARTPAGE");
+print OUT $wikitext_in;
+
+
+
+

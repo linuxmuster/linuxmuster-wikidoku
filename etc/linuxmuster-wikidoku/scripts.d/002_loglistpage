@@ -1,0 +1,10 @@
+#!/bin/bash
+
+LOGDIR=":restricted:schulnetzbetreuung:commandlogs"
+AUSGABE="wikidoc[[loglist|Kommandologs]]\n"
+
+AUSGABE="${AUSGABE}~~NOCACHE~~\n\n"
+AUSGABE="${AUSGABE}===== Kommandologs =====\n\n"
+AUSGABE="${AUSGABE}{{simplefilelist>${LOGDIR}:*}}\n"
+
+echo -e $AUSGABE
