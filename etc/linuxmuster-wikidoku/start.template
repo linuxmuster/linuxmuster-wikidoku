@@ -1,0 +1,35 @@
+====== Netzwerkdokumentation ======
+===== Allgemeines =====
+
+  * [[ansprechpartner|Ansprechpartner]] Adressen/Telefonnummern und Zuständigkeiten (Hersteller, Schulträger, Dienstleister
+  * [[passwoerter|Zugangsdaten]]
+  * [[infrastruktur|Infrastruktur]] Regeln zur Vergabe der IP-Adressen und Rechnernamen, Netzwerkplan, IP Adressen und Zugangsdaten zu den aktiven Komponenten des Netzes u.ä.
+  * [[wlan|Wlan]] Dokumentation Wlan
+  * [[drucker|Drucken]] Hinweise zu den Druckern: Einrichtung, Adressen u.ä.
+  * [[private_rechner|Zugang zum Schulnetz mit privaten PCs]] Private PCs im Schulnetz
+
+===== Pflege der Clients =====
+
+  * [[hardware|Hardware]] Hinweise und Merkzettel zu hardwarebezogenen Besonderheiten
+  * [[software|Software]] Hinweise und Merkzettel zu softwarebezogenen Besonderheiten
+===== Pflege der Server =====
+
+  * [[aktualisierungen|Aktualisierung des Servers]]
+  * [[schuljahreswechsel|Schuljahreswechsel]]
+  * [[neue_kollegen|Neue Lehreraccounts]]
+===== Verschiedene Merkzettel ====
+
+  * [[logbuch|Logbuch]]
+
+===== Von WikiDoku erzeugte Seiten =====
+
+/* wikidoku_start - diesen Kommentar nicht verändern! */
+
+  * [[status|Musterlösungsstatus]]
+  * [[loglist|Kommandologs]]
+  * [[workstations_ip|Workstations nach IP-Adresse]]
+  * [[workstations_name|Workstations nach Rechnername]]
+  * [[workstations_raum|Workstations nach Raumname]]
+  * [[workstations_hw|Workstations nach Hardwareklasse]]
+
+/* wikidoku_ende - diesen Kommentar nicht verändern! */

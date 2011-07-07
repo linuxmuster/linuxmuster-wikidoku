@@ -1,10 +1,11 @@
 #!/bin/bash
 
-LOGDIR=":restricted:schulnetzbetreuung:commandlogs"
+. /etc/linuxmuster-wikidoku/wikidoku.conf
+
 AUSGABE="wikidoc[[loglist|Kommandologs]]\n"
 
 AUSGABE="${AUSGABE}~~NOCACHE~~\n\n"
 AUSGABE="${AUSGABE}===== Kommandologs =====\n\n"
-AUSGABE="${AUSGABE}{{simplefilelist>${LOGDIR}:*}}\n"
+AUSGABE="${AUSGABE}{{simplefilelist>${COMMANDLOGS}:*}}\n"
 
 echo -e $AUSGABE
