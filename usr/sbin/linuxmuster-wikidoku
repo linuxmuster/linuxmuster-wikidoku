@@ -1,20 +1,35 @@
 #!/usr/bin/perl
 
+# Befehle verklamüsern
+$command = @ARGV[0];
+if ($command eq "") {
+    $command="update";
+}
 
+# Konfigurationsdatein lesen
 open(KONFIGURATION, '</etc/linuxmuster-wikidoku/wikidoku.conf') or die 'Kann Konfigurationsdatei nicht öffnen: '.$!;
 while (<KONFIGURATION>) {
 chomp;              # Zeilenumbrüche entfernen
 s/#.*//;           # Kommentare ignorieren wenn nötig (dazu # entfernen am Anfang!)
 s/^\s+//;           # Leerzeichen am Anfang entfernen
 s/\s+$//;           # und dasselbe am Ende auch
-next unless length;     # Das was nun noch übrig ist... 
+next unless length;     # Das was nun noch übrig ist...
 # splitten in Paare
-my ($name, $value) = split(/\s*=\s*/, $_, 2);
+($name, $value) = split(/\s*=\s*/, $_, 2);
 $config{$name}=$value;
 }
 close (KONFIGURATION);
 
+# Gibts das Seitenverzeichnis?
 if ( ! -d $config{'PAGESDIR'} ) { die "Pagesdir existiert nicht!";}
+
+# Paket konfiguriert?
+if ( ! ($config{'CONFIGURED'} eq "YES") ) {
+print "Passen Sie die Konfiguration in der Datei\n";
+print "  /etc/linuxmuster-wikidoku/wikidoku.conf\n";
+print "an!\n";
+exit 0;
+}
 
 $SCRIPTSDIR=$config{'SCRIPTSDIR'};
 $config{'ZIELNAMENSRAUM'} =~ s/:/\//;
@@ -23,30 +38,34 @@ $TARGETNAMESPACE =~ s/\/\//\//;
 $STARTPAGE=$TARGETNAMESPACE."/start.txt";
 $STARTPAGE =~ s/\/\//\//;
 
-
-if ( ! -d $TARGETNAMESPACE ) {
-   system("mkdir -p $TARGETNAMESPACE");
-   system("chown www-data: $TARGETNAMESPACE");
+# Wenn es die Startseite noch nicht gibt: Init
+if ( ! -f $STARTPAGE ) {
+    if ( ! -d $TARGETNAMESPACE ) {
+        system("mkdir -p $TARGETNAMESPACE");
+        system("chown www-data: $TARGETNAMESPACE");
+    }
+    system("cp /etc/linuxmuster-wikidoku/start.template $STARTPAGE");
 }
+
+# aktualisieren der Infos
 if ( -f $STARTPAGE ) {
    system("chown www-data: $STARTPAGE");
 }
 
-$STARTREPLACE  = "<wikidoku - diese tags nicht loeschen!>\n===== Von WikiDoku erzeugte Seiten =====\n\n";
+$STARTREPLACE  = "/* wikidoku_start - diesen Kommentar nicht verändern! */\n";
+
 if ( -f $STARTPAGE ) {
    open(IN, "<$STARTPAGE");
    while(<IN>){
      $wikitext_in = $wikitext_in.$_;
    }
    close (IN);
-} else {
-
 }
 
 print $wikitext_in;
-$linklist = $STARTREPLACE; 
+$linklist = $STARTREPLACE;
 
-@allscripts = <$SCRIPTSDIR/*>; 
+@allscripts = <$SCRIPTSDIR/*>;
 foreach $script (@allscripts) {
     print "Running " . $script . "\n";
     $wikitext = `$script`;
@@ -61,9 +80,9 @@ foreach $script (@allscripts) {
     } else  {
         print "Keine Seite erzeugt, Startzeile fehlt!\n";
     }
-} 
+}
 
-$wikitext_in =~ s/^(.*)<wikidoku.*<\/wikidoku.*>(.*)$/$1 $linktext $2/g;
+$wikitext_in =~ s/^(.*)\/\* wikidoku_start.*\/* wikidoku_ende(.*)$/$1 $linktext $2/g;
 
 open(OUT, ">$STARTPAGE");
 print OUT $wikitext_in;

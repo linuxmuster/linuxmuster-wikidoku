@@ -1,7 +1,16 @@
 #!/bin/bash
 . /etc/linuxmuster-wikidoku/wikidoku.conf
-LOGALLCMD_WIKIPATH="/home/linuxmuster-portfolio/data/media/restricted/schulnetzbetreuung/commandlogs"
+COMMANDLOGS=`echo $COMMANDLOGS | sed -e 's|:|/|g'`
+LOGALLCMD_WIKIPATH=${MEDIADIR}${COMMANDLOGS}
+if [ ! -d $LOGALLCMD_WIKIPATH ]; then
+    mkdir -p $LOGALLCMD_WIKIPATH
+fi
 LOGALLCMD_LOGDATE=`date +'%b %d %H:%M:%S:'`
 LOGALLCMD_FILENAME=$LOGALLCMD_WIKIPATH/`date +'%Y%m%d'`.txt
+
 export PROMPT_COMMAND='echo -e "`date +'%Y%m%d-%H:%M:%S'`\t"$USER "\tCOMMAND: " "$(history 1 | cut -c8-)" >> $LOGALLCMD_FILENAME'
-export PS1="(wikilog) $PS1 "
+
+PSCHECK=`echo $PS1 | grep "(wikidoku)" | awk '{print $1}'`
+if [ x$PSCHECK = "x" ]; then
+export PS1="(wikidoku) $PS1"
+fi
