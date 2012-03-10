@@ -1,3 +1,9 @@
+linuxmuster-wikidoku (0.1.1-1) unstable; urgency=low
+
+   * first steps with git an github
+
+ -- Frank Schiebel <frank@linuxmuster.net>  Sun, 11 Mar 2012 17:0:00 +0100
+
 linuxmuster-wikidoku (0.1.1-0) unstable; urgency=low
 
    * fixed bug in sectionedit
